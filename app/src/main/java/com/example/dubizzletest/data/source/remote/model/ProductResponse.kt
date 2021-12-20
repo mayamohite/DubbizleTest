@@ -6,10 +6,10 @@ import com.google.gson.annotations.SerializedName
  * ProductResponse is used to handle retrofit api response.
  */
 data class ProductResponse(
-    val results: List<Result>?,
+    val results: List<ProductDetail>?,
 )
 
-data class Result(
+data class ProductDetail(
     @SerializedName("created_at")
     val createdAt: String?,
     val price: String?,
