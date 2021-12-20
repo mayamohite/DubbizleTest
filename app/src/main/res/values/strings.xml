@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DubizzleTest</string>
+    <string name="internet_connection_error">Please connect to internet</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>

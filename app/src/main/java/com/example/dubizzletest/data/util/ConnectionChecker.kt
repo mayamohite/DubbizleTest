@@ -13,7 +13,7 @@ import javax.inject.Inject
 class ConnectionChecker @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    fun isConnectedNetwork(): Boolean {
+    fun isConnectedToNetwork(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as ConnectivityManager
 
