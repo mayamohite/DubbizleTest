@@ -2,6 +2,7 @@ package com.example.dubizzletest.data.repository
 
 import com.example.dubizzletest.domain.ProductDataSource
 import com.example.dubizzletest.domain.ProductRepository
+import com.example.dubizzletest.domain.common.Result
 import com.example.dubizzletest.domain.entities.Product
 import javax.inject.Inject
 
@@ -9,7 +10,7 @@ class ProductRepositoryImpl @Inject constructor(
     private val productDataSource: ProductDataSource,
 ) : ProductRepository {
 
-    override suspend fun getProductList(): List<Product> {
+    override suspend fun getProductList(): Result<List<Product>> {
         return productDataSource.getProductList()
     }
 }
