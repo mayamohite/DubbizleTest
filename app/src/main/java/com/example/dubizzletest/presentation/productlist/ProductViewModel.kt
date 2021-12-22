@@ -20,9 +20,6 @@ class ProductViewModel @Inject constructor(
     private val _productList = MutableLiveData<Result<List<Product>>>()
     val productList: LiveData<Result<List<Product>>> = _productList
 
-    @Inject
-    lateinit var imageCache: ImageCache
-
     init {
         _productList.value = Result.Loading
         viewModelScope.launch(Dispatchers.IO) {
