@@ -7,9 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.dubizzletest.domain.common.Result
 import com.example.dubizzletest.domain.entities.Product
 import com.example.dubizzletest.domain.usecases.GetProductsUseCase
+import com.example.dubizzletest.presentation.util.ImageCache
+import com.example.dubizzletest.presentation.util.getImageBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,10 +22,32 @@ class ProductViewModel @Inject constructor(
 
     val productList: LiveData<Result<List<Product>>> = _productList
 
+    @Inject
+    lateinit var imageCache: ImageCache
+
     init {
         _productList.value = Result.Loading
         viewModelScope.launch(Dispatchers.IO) {
             val repositoryResult = getProductsUseCase.getProductList()
+            val imageDownloadJobs = ArrayList<Job>()
+            if (repositoryResult is Result.Success) {
+                supervisorScope {
+                    for (product in repositoryResult.data) {
+                        if (product.images != null) {
+                            for (imageUrl in product.images) {
+                                val job = launch(Dispatchers.IO) {
+                                    imageCache.addImageToCache(
+                                        imageUrl,
+                                        getImageBitmap(imageCache, imageUrl)
+                                    )
+                                }
+                                imageDownloadJobs.add(job)
+                            }
+                        }
+                    }
+                }
+            }
+            imageDownloadJobs.joinAll()
             _productList.postValue(repositoryResult)
         }
     }
