@@ -1,24 +1,26 @@
 package com.example.dubizzletest.presentation.productlist
 
-import android.graphics.Bitmap
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.dubizzletest.R
 import com.example.dubizzletest.domain.entities.Product
-import com.example.dubizzletest.presentation.util.ImageCache
+import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
 class ProductRecyclerAdapter @Inject constructor(
+    @ActivityContext private val context: Context
 ) : RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder>() {
 
     private var productList: List<Product>? = null
-
-    @Inject
-    lateinit var imageCache: ImageCache
+    private lateinit var callback: (product: Product) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -30,13 +32,11 @@ class ProductRecyclerAdapter @Inject constructor(
         val product = productList?.get(position)
         holder.tvProductName.text = product?.name
         holder.tvProductPrice.text = product?.price
-
-        //From backend list of images got for product. In recycler view only one image is displayed.
-        val bitmap: Bitmap? = imageCache.getImageFromCache(product?.images?.get(0))
-        if (bitmap != null) {
-            holder.ivProduct.setImageBitmap(bitmap)
+        Glide.with(context).load(product?.images?.get(0)).placeholder(ColorDrawable(Color.LTGRAY))
+            .into(holder.ivProduct)
+        holder.itemView.setOnClickListener {
+            callback(product!!)
         }
-        holder.ivProduct
     }
 
     override fun getItemCount(): Int {
@@ -52,5 +52,9 @@ class ProductRecyclerAdapter @Inject constructor(
         val ivProduct: ImageView = itemView.findViewById(R.id.iv_product)
         val tvProductName: TextView = itemView.findViewById(R.id.tv_product_name)
         val tvProductPrice: TextView = itemView.findViewById(R.id.tv_product_price)
+    }
+
+    fun setProductSelectionCallback(clickListener: (Product) -> Unit) {
+        callback = clickListener
     }
 }
