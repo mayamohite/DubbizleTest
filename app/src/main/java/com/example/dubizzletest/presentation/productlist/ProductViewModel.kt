@@ -9,6 +9,7 @@ import com.example.dubizzletest.domain.entities.Product
 import com.example.dubizzletest.domain.usecases.GetProductsUseCase
 import com.example.dubizzletest.presentation.util.ImageCache
 import com.example.dubizzletest.presentation.util.getImageBitmap
+import com.example.dubizzletest.presentation.util.wrapEspressoIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -26,28 +27,30 @@ class ProductViewModel @Inject constructor(
 
     init {
         _productList.value = Result.Loading
-        viewModelScope.launch(Dispatchers.IO) {
-            val repositoryResult = getProductsUseCase.getProductList()
-            //Images are cached in LruCache.
-            val imageDownloadJobs = ArrayList<Job>()
-            if (repositoryResult is Result.Success) {
-                supervisorScope {
-                    for (product in repositoryResult.data) {
-                        if (product.images != null) {
-                            for (imageUrl in product.images) {
-                                val job = launch(Dispatchers.IO) {
-                                    imageCache.addImageToCache(
-                                        imageUrl,
-                                        getImageBitmap(imageCache, imageUrl)
-                                    )
+        wrapEspressoIdlingResource {
+            viewModelScope.launch(Dispatchers.IO) {
+                val repositoryResult = getProductsUseCase.getProductList()
+                //Images are cached in LruCache.
+                val imageDownloadJobs = ArrayList<Job>()
+                if (repositoryResult is Result.Success) {
+                    supervisorScope {
+                        for (product in repositoryResult.data) {
+                            if (product.images != null) {
+                                for (imageUrl in product.images) {
+                                    val job = launch(Dispatchers.IO) {
+                                        imageCache.addImageToCache(
+                                            imageUrl,
+                                            getImageBitmap(imageCache, imageUrl)
+                                        )
+                                    }
+                                    imageDownloadJobs.add(job)
                                 }
-                                imageDownloadJobs.add(job)
                             }
                         }
                     }
                 }
+                _productList.postValue(repositoryResult)
             }
-            _productList.postValue(repositoryResult)
         }
     }
 }
