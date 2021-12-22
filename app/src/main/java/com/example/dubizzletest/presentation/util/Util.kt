@@ -5,6 +5,8 @@ import android.os.Build
 import android.widget.Toast
 import com.example.dubizzletest.BuildConfig
 
+const val PRODUCT = "product"
+
 /**
  * Function to show toast
  */
