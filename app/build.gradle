@@ -59,10 +59,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptorVersion"
 
-    //Glide
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
-
     //Hilt
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
@@ -84,7 +80,6 @@ dependencies {
     testImplementation "androidx.test:rules:$coreVersion"
     implementation "androidx.test:core:$coreVersion"
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
-
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
