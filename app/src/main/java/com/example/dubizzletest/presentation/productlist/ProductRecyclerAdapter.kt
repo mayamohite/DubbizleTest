@@ -1,26 +1,25 @@
 package com.example.dubizzletest.presentation.productlist
 
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.dubizzletest.R
 import com.example.dubizzletest.domain.entities.Product
-import dagger.hilt.android.qualifiers.ActivityContext
+import com.example.dubizzletest.presentation.util.ImageCache
 import javax.inject.Inject
 
 class ProductRecyclerAdapter @Inject constructor(
-    @ActivityContext private val context: Context
 ) : RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder>() {
 
     private var productList: List<Product>? = null
     private lateinit var callback: (product: Product) -> Unit
+
+    @Inject
+    lateinit var imageCache: ImageCache
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -32,8 +31,11 @@ class ProductRecyclerAdapter @Inject constructor(
         val product = productList?.get(position)
         holder.tvProductName.text = product?.name
         holder.tvProductPrice.text = product?.price
-        Glide.with(context).load(product?.images?.get(0)).placeholder(ColorDrawable(Color.LTGRAY))
-            .into(holder.ivProduct)
+        val bitmap: Bitmap? = imageCache.getImageFromCache(product?.images?.get(0))
+        bitmap?.let {
+            holder.ivProduct.setImageBitmap(it)
+        }
+
         holder.itemView.setOnClickListener {
             callback(product!!)
         }

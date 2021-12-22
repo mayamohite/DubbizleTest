@@ -1,8 +1,7 @@
 package com.example.dubizzletest.presentation.productdetails;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +10,35 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.bumptech.glide.Glide;
 import com.example.dubizzletest.R;
+import com.example.dubizzletest.presentation.util.ImageCache;
 
 import java.util.List;
+
+import dagger.hilt.EntryPoint;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.EntryPointAccessors;
+import dagger.hilt.components.SingletonComponent;
 
 public class ProductViewPagerAdapter extends PagerAdapter {
 
     LayoutInflater layoutInflater;
     Context context;
     List<String> productImages;
+    ImageCache imageCache;
+
+    /**
+     * EntryPoint is used as inject dependencies in PagerAdapter not supported by Hilt.
+     */
+    @EntryPoint
+    @InstallIn(SingletonComponent.class)
+    interface ViewPagerEntryPoint {
+        ImageCache getImageCache();
+    }
 
     public ProductViewPagerAdapter(Context context, List<String> productImages) {
+        ViewPagerEntryPoint viewPagerEntryPoint = EntryPointAccessors.fromApplication(context, ViewPagerEntryPoint.class);
+        imageCache = viewPagerEntryPoint.getImageCache();
         this.context = context;
         this.productImages = productImages;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -43,9 +59,10 @@ public class ProductViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         View view = layoutInflater.inflate(R.layout.row_slider_image, container, false);
         ImageView ivProductImage = view.findViewById(R.id.iv_product);
-        Glide.with(context).load(productImages.get(position)).placeholder(new ColorDrawable(Color.LTGRAY))
-                .into(ivProductImage);
-
+        Bitmap bitmap = imageCache.getImageFromCache(productImages.get(position));
+        if (bitmap != null) {
+            ivProductImage.setImageBitmap(bitmap);
+        }
         container.addView(view);
         return view;
     }
