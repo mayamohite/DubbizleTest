@@ -17,40 +17,45 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
+    private val imageCache: ImageCache,
 ) : ViewModel() {
 
     private val _productList = MutableLiveData<Result<List<Product>>>()
     val productList: LiveData<Result<List<Product>>> = _productList
-
-    @Inject
-    lateinit var imageCache: ImageCache
 
     init {
         _productList.value = Result.Loading
         wrapEspressoIdlingResource {
             viewModelScope.launch(Dispatchers.IO) {
                 val repositoryResult = getProductsUseCase.getProductList()
-                //Images are cached in LruCache.
-                val imageDownloadJobs = ArrayList<Job>()
-                if (repositoryResult is Result.Success) {
-                    supervisorScope {
-                        for (product in repositoryResult.data) {
-                            if (product.images != null) {
-                                for (imageUrl in product.images) {
-                                    val job = launch(Dispatchers.IO) {
-                                        imageCache.addImageToCache(
-                                            imageUrl,
-                                            getImageBitmap(imageCache, imageUrl)
-                                        )
-                                    }
-                                    imageDownloadJobs.add(job)
-                                }
+                cacheImages(repositoryResult)
+                _productList.postValue(repositoryResult)
+            }
+        }
+    }
+
+    /**
+     * Cache all product images in LruCache.
+     */
+    private suspend fun cacheImages(repositoryResult: Result<List<Product>>) {
+        val imageDownloadJobs = ArrayList<Job>()
+        if (repositoryResult is Result.Success) {
+            supervisorScope {
+                for (product in repositoryResult.data) {
+                    if (product.images != null) {
+                        for (imageUrl in product.images) {
+                            val imageDownloadJob = launch(Dispatchers.IO) {
+                                imageCache.addImageToCache(
+                                    imageUrl,
+                                    getImageBitmap(imageCache, imageUrl)
+                                )
                             }
+                            imageDownloadJobs.add(imageDownloadJob)
                         }
                     }
                 }
-                _productList.postValue(repositoryResult)
             }
+            imageDownloadJobs.joinAll()
         }
     }
 }

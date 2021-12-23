@@ -4,6 +4,7 @@ import com.example.dubizzletest.domain.ProductDataSource
 import com.example.dubizzletest.domain.ProductRepository
 import com.example.dubizzletest.domain.common.Result
 import com.example.dubizzletest.domain.entities.Product
+import com.example.dubizzletest.presentation.util.wrapEspressoIdlingResource
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
@@ -11,6 +12,8 @@ class ProductRepositoryImpl @Inject constructor(
 ) : ProductRepository {
 
     override suspend fun getProductList(): Result<List<Product>> {
-        return productDataSource.getProductList()
+        wrapEspressoIdlingResource {
+            return productDataSource.getProductList()
+        }
     }
 }

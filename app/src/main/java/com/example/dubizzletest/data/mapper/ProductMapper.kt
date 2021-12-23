@@ -19,7 +19,6 @@ class ProductMapper @Inject constructor(
                     name = productDetail.name,
                     price = productDetail.price,
                     images = productDetail.imageUrls,
-                    thumbnails = productDetail.thumbnails,
                 )
                 productDetails.add(product)
             }

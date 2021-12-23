@@ -1,6 +1,5 @@
 package com.example.dubizzletest.presentation.productlist
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,8 +26,8 @@ class ProductListFragment : BaseFragment() {
     private lateinit var fragmentView: View
     private val productViewModel: ProductViewModel by activityViewModels()
 
-    private lateinit var productSelectionCallback: ProductSelectionCallback
     private lateinit var progressBar: ProgressBar
+    private lateinit var productSelectionCallback: (product: Product) -> Unit
 
     @Inject
     lateinit var productListAdapter: ProductRecyclerAdapter
@@ -37,11 +36,6 @@ class ProductListFragment : BaseFragment() {
     companion object {
         val TAG: String = ProductListFragment::class.java.name
         fun newInstance() = ProductListFragment()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        productSelectionCallback = context as ProductSelectionCallback
     }
 
     override fun onCreateView(
@@ -79,7 +73,7 @@ class ProductListFragment : BaseFragment() {
             )
         )
         productListAdapter.setProductSelectionCallback { product ->
-            productSelectionCallback.onProductSelection(product)
+            productSelectionCallback(product)
         }
         progressBar = fragmentView.findViewById(R.id.progress_bar)
     }
@@ -118,7 +112,7 @@ class ProductListFragment : BaseFragment() {
         this.activity?.toast(message)
     }
 
-    interface ProductSelectionCallback {
-        fun onProductSelection(product: Product)
+    fun setProductSelectionCallback(onProductSelection: (product: Product) -> Unit) {
+        productSelectionCallback = onProductSelection
     }
 }

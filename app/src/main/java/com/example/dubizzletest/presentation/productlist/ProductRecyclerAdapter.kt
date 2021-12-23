@@ -1,6 +1,5 @@
 package com.example.dubizzletest.presentation.productlist
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,11 @@ import com.example.dubizzletest.presentation.util.ImageCache
 import javax.inject.Inject
 
 class ProductRecyclerAdapter @Inject constructor(
+    private val imageCache: ImageCache
 ) : RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder>() {
 
     private var productList: List<Product>? = null
     private lateinit var callback: (product: Product) -> Unit
-
-    @Inject
-    lateinit var imageCache: ImageCache
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -31,9 +28,8 @@ class ProductRecyclerAdapter @Inject constructor(
         val product = productList?.get(position)
         holder.tvProductName.text = product?.name
         holder.tvProductPrice.text = product?.price
-        val bitmap: Bitmap? = imageCache.getImageFromCache(product?.images?.get(0))
-        bitmap?.let {
-            holder.ivProduct.setImageBitmap(it)
+        imageCache.getImageFromCache(product?.images?.get(0)).let { bitmap ->
+            holder.ivProduct.setImageBitmap(bitmap)
         }
 
         holder.itemView.setOnClickListener {

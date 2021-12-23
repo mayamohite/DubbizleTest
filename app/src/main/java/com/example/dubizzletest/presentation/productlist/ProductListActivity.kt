@@ -9,7 +9,7 @@ import com.example.dubizzletest.presentation.util.PRODUCT
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProductListActivity : BaseActivity(), ProductListFragment.ProductSelectionCallback {
+class ProductListActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +25,12 @@ class ProductListActivity : BaseActivity(), ProductListFragment.ProductSelection
         supportFragmentManager.beginTransaction().replace(
             R.id.fragment_container, productListFragment
         ).addToBackStack(ProductListFragment.TAG).commit()
+        productListFragment.setProductSelectionCallback { product ->
+            onProductSelection(product)
+        }
     }
 
-    override fun onProductSelection(product: Product) {
+    private fun onProductSelection(product: Product) {
         val bundle = Bundle()
         bundle.putParcelable(PRODUCT, product)
         val productDetailsFragment = ProductDetailsFragment()
