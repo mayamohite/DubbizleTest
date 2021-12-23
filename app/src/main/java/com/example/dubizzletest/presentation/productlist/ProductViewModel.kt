@@ -27,9 +27,9 @@ class ProductViewModel @Inject constructor(
         _productList.value = Result.Loading
         wrapEspressoIdlingResource {
             viewModelScope.launch(Dispatchers.IO) {
-                val repositoryResult = getProductsUseCase.getProductList()
-                cacheImages(repositoryResult)
-                _productList.postValue(repositoryResult)
+                val productResult = getProductsUseCase.getProductList()
+                cacheImages(productResult)
+                _productList.postValue(productResult)
             }
         }
     }
@@ -37,11 +37,11 @@ class ProductViewModel @Inject constructor(
     /**
      * Cache all product images in LruCache.
      */
-    private suspend fun cacheImages(repositoryResult: Result<List<Product>>) {
+    private suspend fun cacheImages(productResult: Result<List<Product>>) {
         val imageDownloadJobs = ArrayList<Job>()
-        if (repositoryResult is Result.Success) {
+        if (productResult is Result.Success) {
             supervisorScope {
-                for (product in repositoryResult.data) {
+                for (product in productResult.data) {
                     if (product.images != null) {
                         for (imageUrl in product.images) {
                             val imageDownloadJob = launch(Dispatchers.IO) {

@@ -2,4 +2,6 @@
     <string name="app_name">DubizzleTest</string>
     <string name="internet_connection_error">Please connect to internet</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="product_list">Product list</string>
+    <string name="product_details">Product details</string>
 </resources>
