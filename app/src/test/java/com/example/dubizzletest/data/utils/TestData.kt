@@ -38,16 +38,10 @@ val PRODUCT_ENTITY = listOf(
         name = "hat",
         price = "AED 100",
         images = listOf("https://demo-app-photos-45687895456123.s3.amazonaws"),
-        thumbnails = listOf(
-            "https://demo-app-photos-45687895456123.s3.amazonaws"
-        )
     ),
     Product(
         name = "Car",
         price = "AED 100000",
         images = listOf("https://demo-app-photos-45687895456123.s3.amazonaws"),
-        thumbnails = listOf(
-            "https://demo-app-photos-45687895456123.s3.amazonaws"
-        )
     ),
 )
