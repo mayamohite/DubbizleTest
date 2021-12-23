@@ -17,7 +17,7 @@ class ProductListActivity : BaseActivity() {
     }
 
     override fun getLayout(): Int {
-        return R.layout.activity_main
+        return R.layout.activity_product
     }
 
     private fun launchProductListFragment() {
