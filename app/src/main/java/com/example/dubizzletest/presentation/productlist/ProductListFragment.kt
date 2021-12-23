@@ -49,6 +49,7 @@ class ProductListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.setTitle(R.string.product_list)
         setupViews()
         observeDataChanges()
     }

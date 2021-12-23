@@ -37,6 +37,7 @@ public class ProductDetailsFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NotNull View view, @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle(R.string.product_details);
         product = getArguments().getParcelable(PRODUCT);
         initViews();
     }
