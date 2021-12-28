@@ -3,7 +3,6 @@ package com.example.dubizzletest.productlist
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.dubizzletest.MockServerDispatcher
 import com.example.dubizzletest.R
@@ -78,14 +77,14 @@ class ProductListFragmentTest {
         onView(withId(R.id.rv_product))
             .perform(
                 RecyclerViewActions.scrollTo<ProductRecyclerAdapter.ProductViewHolder>(
-                    ViewMatchers.hasDescendant(ViewMatchers.withText("Glasses"))
+                    hasDescendant(withText("Notebook"))
                 )
             )
 
         onView(withId(R.id.rv_product))
             .perform(
                 RecyclerViewActions.scrollTo<ProductRecyclerAdapter.ProductViewHolder>(
-                    ViewMatchers.hasDescendant(ViewMatchers.withText("AED 500"))
+                    hasDescendant(withText("AED 5"))
                 )
             )
     }

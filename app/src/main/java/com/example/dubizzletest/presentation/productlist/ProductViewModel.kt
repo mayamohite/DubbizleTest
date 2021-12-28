@@ -23,6 +23,9 @@ class ProductViewModel @Inject constructor(
     private val _productList = MutableLiveData<Result<List<Product>>>()
     val productList: LiveData<Result<List<Product>>> = _productList
 
+    private val _selectedProduct = MutableLiveData<Product>()
+    val selectedProduct: LiveData<Product> = _selectedProduct
+
     init {
         _productList.value = Result.Loading
         wrapEspressoIdlingResource {
@@ -37,25 +40,30 @@ class ProductViewModel @Inject constructor(
     /**
      * Cache all product images in LruCache.
      */
-    private suspend fun cacheImages(productResult: Result<List<Product>>) {
-        val imageDownloadJobs = ArrayList<Job>()
-        if (productResult is Result.Success) {
+    private suspend fun cacheImages(repositoryResult: Result<List<Product>>) {
+        if (repositoryResult is Result.Success) {
             supervisorScope {
-                for (product in productResult.data) {
+                for (product in repositoryResult.data) {
                     if (product.images != null) {
                         for (imageUrl in product.images) {
-                            val imageDownloadJob = launch(Dispatchers.IO) {
-                                imageCache.addImageToCache(
-                                    imageUrl,
-                                    getImageBitmap(imageCache, imageUrl)
-                                )
+                            wrapEspressoIdlingResource {
+                                val imageDownloadJob = launch(Dispatchers.IO) {
+                                    val bitmap = getImageBitmap(imageCache, imageUrl)
+                                    bitmap?.let {
+                                        imageCache.addImageToCache(
+                                            imageUrl, bitmap
+                                        )
+                                    }
+                                }
                             }
-                            imageDownloadJobs.add(imageDownloadJob)
                         }
                     }
                 }
             }
-            imageDownloadJobs.joinAll()
         }
+    }
+
+    fun setSelectedProduct(product: Product) {
+        _selectedProduct.value = product
     }
 }
