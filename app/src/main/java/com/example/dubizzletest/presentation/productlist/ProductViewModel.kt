@@ -41,6 +41,7 @@ class ProductViewModel @Inject constructor(
      * Cache all product images in LruCache.
      */
     private suspend fun cacheImages(repositoryResult: Result<List<Product>>) {
+        val imageDownloadJobs = ArrayList<Job>()
         if (repositoryResult is Result.Success) {
             supervisorScope {
                 for (product in repositoryResult.data) {
@@ -61,6 +62,7 @@ class ProductViewModel @Inject constructor(
                 }
             }
         }
+        imageDownloadJobs.joinAll()
     }
 
     fun setSelectedProduct(product: Product) {
