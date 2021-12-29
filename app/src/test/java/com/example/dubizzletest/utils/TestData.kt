@@ -1,4 +1,4 @@
-package com.example.dubizzletest.data.utils
+package com.example.dubizzletest.utils
 
 import com.example.dubizzletest.data.source.remote.model.ProductDetail
 import com.example.dubizzletest.data.source.remote.model.ProductResponse

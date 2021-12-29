@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.dubizzletest.domain.common.Result
 import com.example.dubizzletest.domain.entities.Product
 import com.example.dubizzletest.domain.usecases.GetProductsUseCase
-import com.example.dubizzletest.presentation.util.ImageCache
-import com.example.dubizzletest.presentation.util.getImageBitmap
+import com.example.dubizzletest.presentation.util.CoroutinesDispatcherProvider
+import com.example.dubizzletest.presentation.util.ImageDownloadUtil
 import com.example.dubizzletest.presentation.util.wrapEspressoIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -17,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
-    private val imageCache: ImageCache,
+    private val imageDownloadUtil: ImageDownloadUtil,
+    private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
     private val _productList = MutableLiveData<Result<List<Product>>>()
@@ -29,7 +30,7 @@ class ProductViewModel @Inject constructor(
     init {
         _productList.value = Result.Loading
         wrapEspressoIdlingResource {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(dispatcherProvider.io) {
                 val productResult = getProductsUseCase.getProductList()
                 cacheImages(productResult)
                 _productList.postValue(productResult)
@@ -48,14 +49,10 @@ class ProductViewModel @Inject constructor(
                     if (product.images != null) {
                         for (imageUrl in product.images) {
                             wrapEspressoIdlingResource {
-                                val imageDownloadJob = launch(Dispatchers.IO) {
-                                    val bitmap = getImageBitmap(imageCache, imageUrl)
-                                    bitmap?.let {
-                                        imageCache.addImageToCache(
-                                            imageUrl, bitmap
-                                        )
-                                    }
+                                val imageDownloadJob = launch(dispatcherProvider.io) {
+                                    imageDownloadUtil.downloadImageBitmap(imageUrl)
                                 }
+                                imageDownloadJobs.add(imageDownloadJob)
                             }
                         }
                     }

@@ -6,8 +6,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.dubizzletest.data.mapper.ProductMapper
 import com.example.dubizzletest.data.source.remote.service.ProductApi
 import com.example.dubizzletest.data.util.ConnectionChecker
-import com.example.dubizzletest.data.utils.PRODUCT_ENTITY
-import com.example.dubizzletest.data.utils.PRODUCT_RESPONSE
+import com.example.dubizzletest.utils.PRODUCT_ENTITY
+import com.example.dubizzletest.utils.PRODUCT_RESPONSE
 import com.example.dubizzletest.domain.common.Result
 import com.example.dubizzletest.domain.entities.Product
 import kotlinx.coroutines.runBlocking

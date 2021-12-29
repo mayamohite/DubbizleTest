@@ -1,10 +1,10 @@
 package com.example.dubizzletest.data.mapper
 
 import com.example.dubizzletest.data.source.remote.model.ProductResponse
-import com.example.dubizzletest.data.utils.EMPTY_PRODUCT_RESPONSE
-import com.example.dubizzletest.data.utils.PRODUCT_ENTITY
-import com.example.dubizzletest.data.utils.PRODUCT_RESPONSE
-import com.example.dubizzletest.data.utils.parametersOf
+import com.example.dubizzletest.utils.EMPTY_PRODUCT_RESPONSE
+import com.example.dubizzletest.utils.PRODUCT_ENTITY
+import com.example.dubizzletest.utils.PRODUCT_RESPONSE
+import com.example.dubizzletest.utils.parametersOf
 import com.example.dubizzletest.domain.entities.Product
 import org.junit.Assert
 import org.junit.Test

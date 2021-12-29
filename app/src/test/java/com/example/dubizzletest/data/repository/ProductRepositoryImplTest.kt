@@ -1,6 +1,6 @@
 package com.example.dubizzletest.data.repository
 
-import com.example.dubizzletest.data.utils.PRODUCT_ENTITY
+import com.example.dubizzletest.utils.PRODUCT_ENTITY
 import com.example.dubizzletest.domain.ProductDataSource
 import com.example.dubizzletest.domain.ProductRepository
 import kotlinx.coroutines.runBlocking

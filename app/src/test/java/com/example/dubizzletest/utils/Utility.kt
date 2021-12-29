@@ -1,4 +1,4 @@
-package com.example.dubizzletest.data.utils
+package com.example.dubizzletest.utils
 
 typealias TestParameters = List<Array<*>>
 

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +15,6 @@ import com.example.dubizzletest.domain.entities.Product
 import com.example.dubizzletest.presentation.util.ResultObserver
 import com.example.dubizzletest.presentation.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -31,7 +27,6 @@ class ProductListFragment : BaseFragment() {
     private val productViewModel: ProductViewModel by activityViewModels()
 
     private lateinit var progressBar: ProgressBar
-//    private lateinit var productSelectionCallback: (product: Product) -> Unit
 
     @Inject
     lateinit var productListAdapter: ProductRecyclerAdapter
@@ -116,8 +111,4 @@ class ProductListFragment : BaseFragment() {
     private fun showErrorMessage(message: String) {
         this.activity?.toast(message)
     }
-
-//    fun setProductSelectionCallback(onProductSelection: (product: Product) -> Unit) {
-//        productSelectionCallback = onProductSelection
-//    }
 }

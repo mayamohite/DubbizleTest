@@ -2,6 +2,7 @@ package com.example.dubizzletest.productlist
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.dubizzletest.MockServerDispatcher
@@ -22,6 +23,7 @@ import dagger.hilt.android.testing.UninstallModules
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -62,8 +64,8 @@ class ProductListFragmentTest {
     @Before
     fun setUp() {
         hiltRule.inject()
-        imageCache.initializeCache()
         mockWebServer.start(8080)
+        imageCache.initializeCache()
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         IdlingRegistry.getInstance().register(OkHttp3IdlingResource.create("okhttp", okHttp))
     }
@@ -87,5 +89,19 @@ class ProductListFragmentTest {
                     hasDescendant(withText("AED 5"))
                 )
             )
+    }
+
+    @Test
+    fun testFailureResponse() {
+        mockWebServer.dispatcher = MockServerDispatcher().ErrorDispatcher()
+
+        launchFragmentInHiltContainer<ProductListFragment>()
+
+        onView(withId(R.id.rv_product)).check(ViewAssertions.matches(hasChildCount(0)))
+    }
+
+    @After
+    fun tearDown() {
+        mockWebServer.shutdown()
     }
 }
