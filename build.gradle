@@ -27,6 +27,7 @@ task clean(type: Delete) {
 }
 
 ext {
+    archCoreTesting = '2.1.0'
     coreVersion = '1.4.0'
     coroutinesVersion = '1.5.0'
     espressoCoreVersion = '3.0.2'

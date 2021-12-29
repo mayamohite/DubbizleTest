@@ -80,6 +80,8 @@ dependencies {
     testImplementation "androidx.test:rules:$coreVersion"
     implementation "androidx.test:core:$coreVersion"
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation "androidx.arch.core:core-testing:$archCoreTesting"
+
 
     //Espresso
     testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
