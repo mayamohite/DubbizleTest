@@ -7,6 +7,7 @@ import com.example.dubizzletest.domain.usecases.GetProductsUseCase
 import com.example.dubizzletest.presentation.util.CoroutinesDispatcherProvider
 import com.example.dubizzletest.presentation.util.ImageDownloadUtil
 import com.example.dubizzletest.utils.MainCoroutineRule
+import com.example.dubizzletest.utils.getOrAwaitValue
 import com.example.dubizzletest.utils.runBlocking
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -42,7 +43,7 @@ class ProductViewModelTest {
     }
 
     @Test
-    fun loadShot_emitsTwoUiModels() = mainCoroutineRule.runBlocking {
+    fun `test success response of product api`() = mainCoroutineRule.runBlocking {
         //When
         whenever(getProductsUseCase.getProductList()).thenReturn(Result.Success(PRODUCT_ENTITY))
         //Pause dispatcher
@@ -65,7 +66,7 @@ class ProductViewModelTest {
 
 
     @Test
-    fun loadShot_emitsTwoUiModelsfailure() = testCoroutineDispatcher.runBlockingTest {
+    fun `test failure response of product api`() = testCoroutineDispatcher.runBlockingTest {
         //When
         whenever(getProductsUseCase.getProductList()).thenReturn(Result.Error(""))
         //Pause dispatcher

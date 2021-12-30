@@ -14,6 +14,5 @@ data class CoroutinesDispatcherProvider(
     val computation: CoroutineDispatcher,
     val io: CoroutineDispatcher
 ) {
-
     @Inject constructor() : this(Main, Default, IO)
 }

@@ -61,6 +61,5 @@ class ProductListActivity : BaseActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt("CURRENT_FRAG", currentFrag)
         super.onSaveInstanceState(outState)
-
     }
 }
