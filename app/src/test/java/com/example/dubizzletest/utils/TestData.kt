@@ -1,4 +1,4 @@
-package com.example.dubizzletest.data.utils
+package com.example.dubizzletest.utils
 
 import com.example.dubizzletest.data.source.remote.model.ProductDetail
 import com.example.dubizzletest.data.source.remote.model.ProductResponse
@@ -45,3 +45,5 @@ val PRODUCT_ENTITY = listOf(
         images = listOf("https://demo-app-photos-45687895456123.s3.amazonaws"),
     ),
 )
+
+val IMAGE_URL = "https://picsum.photos/200/300"

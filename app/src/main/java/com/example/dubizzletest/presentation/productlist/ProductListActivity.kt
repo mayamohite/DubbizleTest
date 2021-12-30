@@ -1,6 +1,7 @@
 package com.example.dubizzletest.presentation.productlist
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.example.dubizzletest.R
 import com.example.dubizzletest.base.BaseActivity
 import com.example.dubizzletest.domain.entities.Product
@@ -11,9 +12,18 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProductListActivity : BaseActivity() {
 
+    private var currentFrag = 0
+    private val productViewModel: ProductViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        launchProductListFragment()
+        if (savedInstanceState == null || !savedInstanceState.containsKey("CURRENT_FRAG")) {
+            launchProductListFragment()
+        }
+
+        productViewModel.selectedProduct.observe(this, {
+            onProductSelection(it)
+        })
     }
 
     override fun getLayout(): Int {
@@ -21,16 +31,15 @@ class ProductListActivity : BaseActivity() {
     }
 
     private fun launchProductListFragment() {
+        currentFrag = 1
         val productListFragment = ProductListFragment.newInstance()
         supportFragmentManager.beginTransaction().replace(
             R.id.fragment_container, productListFragment
         ).addToBackStack(ProductListFragment.TAG).commit()
-        productListFragment.setProductSelectionCallback { product ->
-            onProductSelection(product)
-        }
     }
 
     private fun onProductSelection(product: Product) {
+        currentFrag = 2
         val bundle = Bundle()
         bundle.putParcelable(PRODUCT, product)
         val productDetailsFragment = ProductDetailsFragment()
@@ -47,5 +56,10 @@ class ProductListActivity : BaseActivity() {
             finish()
         }
         super.onBackPressed()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("CURRENT_FRAG", currentFrag)
+        super.onSaveInstanceState(outState)
     }
 }

@@ -27,7 +27,6 @@ class ProductListFragment : BaseFragment() {
     private val productViewModel: ProductViewModel by activityViewModels()
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var productSelectionCallback: (product: Product) -> Unit
 
     @Inject
     lateinit var productListAdapter: ProductRecyclerAdapter
@@ -74,7 +73,7 @@ class ProductListFragment : BaseFragment() {
             )
         )
         productListAdapter.setProductSelectionCallback { product ->
-            productSelectionCallback(product)
+            productViewModel.setSelectedProduct(product)
         }
         progressBar = fragmentView.findViewById(R.id.progress_bar)
     }
@@ -111,9 +110,5 @@ class ProductListFragment : BaseFragment() {
      */
     private fun showErrorMessage(message: String) {
         this.activity?.toast(message)
-    }
-
-    fun setProductSelectionCallback(onProductSelection: (product: Product) -> Unit) {
-        productSelectionCallback = onProductSelection
     }
 }

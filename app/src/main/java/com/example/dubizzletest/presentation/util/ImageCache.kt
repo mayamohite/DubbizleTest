@@ -25,8 +25,10 @@ class ImageCache @Inject constructor() {
     }
 
     fun addImageToCache(key: String?, value: Bitmap?) {
-        if (memoryCache.get(key) == null) {
-            memoryCache.put(key, value)
+        wrapEspressoIdlingResource {
+            if (memoryCache.get(key) == null) {
+                memoryCache.put(key, value)
+            }
         }
     }
 
