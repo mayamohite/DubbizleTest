@@ -1,7 +1,7 @@
 # DubizzleTest
 
 DubizzleTest is a sample Android application that uses the clean MVVM architecture approach and is written in Kotlin.
-(ProductDetailsFragment and ProductViewPagerAdapter classes are written in java)
+(ProductDetailsFragment and ProductViewPagerAdapter classes are written in java as per the requirement)
 
 ### Used libraries: ###
 - `HILT` - used for dependency injection.
