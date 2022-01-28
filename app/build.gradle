@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTool
 
     defaultConfig {
         applicationId "com.example.dubizzletest"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
 
@@ -27,8 +27,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility versions.java
+        targetCompatibility versions.java
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -45,63 +45,50 @@ android {
 }
 
 dependencies {
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    debugImplementation "androidx.fragment:fragment-testing:$fragmentTesting"
-
+    implementation libraries.kotlinStdLib
+    implementation libraries.core
+    implementation libraries.appcompat
+    implementation libraries.material
+    implementation libraries.constraintLayout
+    debugImplementation libraries.fragmentTest
     //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.google.code.gson:gson:$gsonVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$interceptorVersion"
-
+    implementation libraries.retrofit
+    implementation libraries.gson
+    implementation libraries.gsonConverter
+    implementation libraries.interceptor
     //Hilt
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
-
+    implementation libraries.hilt
+    kapt(libraries.hiltCompiler)
     // Hilt testing
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltVersion"
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hiltVersion"
-
+    androidTestImplementation libraries.hiltTest
+    kaptAndroidTest libraries.hiltCompiler
     //Mockito
-    testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
-
+    testImplementation libraries.mockitoCore
+    testImplementation libraries.mockitoKotlin
     //Coroutine
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
-
-    testImplementation "androidx.test:core-ktx:$coreVersion"
-    testImplementation "androidx.test.ext:junit-ktx:$junitExt"
-    testImplementation "androidx.test:rules:$coreVersion"
-    implementation "androidx.test:core:$coreVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    testImplementation "androidx.arch.core:core-testing:$archCoreTesting"
-
-
+    testImplementation libraries.coroutine
+    testImplementation libraries.coroutineTest
+    testImplementation libraries.coreKtx
+    testImplementation libraries.jnunitKtx
+    testImplementation libraries.testRules
+    implementation libraries.testCore
+    testImplementation libraries.robolectric
+    testImplementation libraries.archCoreTest
     //Espresso
-    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    testImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
-    testImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
-    testImplementation "com.google.truth:truth:1.1.2"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoCoreVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$espressoVersion"
-    implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
-
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "org.mockito:mockito-android:$mockitoAndroidVersion"
-
+    testImplementation libraries.espressoCoreTest
+    testImplementation libraries.espressoContrib
+    testImplementation libraries.espressoIntent
+    testImplementation libraries.truth
+    androidTestImplementation libraries.espressoTestCore
+    androidTestImplementation libraries.espressoCoreTest
+    androidTestImplementation libraries.espressoContrib
+    androidTestImplementation libraries.espressoIntent
+    androidTestImplementation libraries.concurrentIdling
+    implementation libraries.espressoIdling
+    testImplementation libraries.junit
+    androidTestImplementation libraries.extJnit
+    androidTestImplementation libraries.mockitoAndroid
     //MoCk webserver
-    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockWebserverVersion"
-    androidTestImplementation "com.jakewharton.espresso:okhttp3-idling-resource:$idlingResource"
-
+    androidTestImplementation libraries.mockServer
+    androidTestImplementation libraries.idlingResource
 }

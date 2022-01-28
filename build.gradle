@@ -1,17 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.4.32"
+    apply from: 'dependencies.gradle'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath libraries.gradle
+        classpath libraries.kotlinGradle
+        classpath libraries.hiltPlugin
     }
 }
 
@@ -26,22 +23,3 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-ext {
-    archCoreTesting = '2.1.0'
-    coreVersion = '1.4.0'
-    coroutinesVersion = '1.5.0'
-    espressoCoreVersion = '3.0.2'
-    espressoVersion = '3.4.0'
-    fragmentTesting = '1.3.6'
-    gsonVersion = '2.8.6'
-    hiltVersion = '2.38.1'
-    idlingResource = '1.0.0'
-    interceptorVersion = '4.9.0'
-    junitExt = '1.1.3'
-    mockitoAndroidVersion = '2.28.2'
-    mockitoKotlinVersion = '3.2.0'
-    mockitoCoreVersion = '3.9.0'
-    mockWebserverVersion = '4.4.0'
-    retrofitVersion = '2.9.0'
-    robolectricVersion = '4.6.1'
-}
