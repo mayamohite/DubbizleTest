@@ -59,6 +59,11 @@ dependencies {
     //Hilt
     implementation libraries.hilt
     kapt(libraries.hiltCompiler)
+    //Navigation component
+    implementation libraries.navFragment
+    implementation libraries.navUi
+    implementation libraries.navKotlin
+    implementation libraries.navUiKtx
     // Hilt testing
     androidTestImplementation libraries.hiltTest
     kaptAndroidTest libraries.hiltCompiler
@@ -91,4 +96,5 @@ dependencies {
     //MoCk webserver
     androidTestImplementation libraries.mockServer
     androidTestImplementation libraries.idlingResource
+    androidTestImplementation libraries.navTesting
 }
