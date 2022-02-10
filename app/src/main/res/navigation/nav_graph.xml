@@ -7,13 +7,11 @@
     <fragment
         android:id="@+id/productListFragment"
         android:name="com.example.dubizzletest.presentation.productlist.ProductListFragment"
-        android:label="ProductListFragment" >
+        android:label="ProductListFragment">
         <action
             android:id="@+id/action_productListFragment_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment" />
+            app:destination="@id/nav_graph_second" />
     </fragment>
-    <fragment
-        android:id="@+id/productDetailsFragment"
-        android:name="com.example.dubizzletest.presentation.productdetails.ProductDetailsFragment"
-        android:label="ProductDetailsFragment" />
+
+    <include app:graph="@navigation/nav_graph_second" />
 </navigation>

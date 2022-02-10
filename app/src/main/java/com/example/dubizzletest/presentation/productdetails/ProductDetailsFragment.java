@@ -5,11 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
+
 import com.example.dubizzletest.R;
 import com.example.dubizzletest.base.BaseFragment;
 import com.example.dubizzletest.domain.entities.Product;
@@ -58,6 +61,12 @@ public class ProductDetailsFragment extends BaseFragment {
         productViewPager.setOffscreenPageLimit(1);
         TabLayout tabLayout = fragmentView.findViewById(R.id.tl_image);
         tabLayout.setupWithViewPager(productViewPager);
+        productName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(ProductDetailsFragment.this).navigate(R.id.action_productDetailsFragment_to_dummyActiivity);
+            }
+        });
     }
 
     private void setProductDetails(Product product) {

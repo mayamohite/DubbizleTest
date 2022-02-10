@@ -13,13 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DubizzleTest">
-        <activity android:name="com.example.dubizzletest.presentation.productlist.ProductListActivity">
+        <activity android:name="com.example.dubizzletest.presentation.productlist.ProductListActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".presentation.DummyActiivity"/>
     </application>
 
 </manifest>

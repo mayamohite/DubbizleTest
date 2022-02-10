@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:textSize="@dimen/eighteen_sp"
+        android:clickable="true"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0"
