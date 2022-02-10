@@ -1,7 +1,7 @@
 ext {
     versions = [
-            compileSdk           : 30,
-            targetSdk            : 30,
+            compileSdk           : 31,
+            targetSdk            : 31,
             minSdk               : 21,
             java                 : JavaVersion.VERSION_1_8,
             buildTool            : "30.0.3",
@@ -22,7 +22,8 @@ ext {
             mockWebserverVersion : '4.4.0',
             retrofitVersion      : '2.9.0',
             robolectricVersion   : '4.6.1',
-            kotlin               : "1.4.32",
+            kotlin               : "1.6.0",//"1.4.32",
+            nav_version          : "2.4.0",
     ]
 
     libraries = [
@@ -64,5 +65,10 @@ ext {
             gradle          : "com.android.tools.build:gradle:4.1.1",
             kotlinGradle    : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
             hiltPlugin      : "com.google.dagger:hilt-android-gradle-plugin:$versions.hiltVersion",
+            navFragment     : "androidx.navigation:navigation-fragment:$versions.nav_version",
+            navUi           : "androidx.navigation:navigation-ui:$versions.nav_version",
+            navKotlin       : "androidx.navigation:navigation-fragment-ktx:$versions.nav_version",
+            navUiKtx        : "androidx.navigation:navigation-ui-ktx:$versions.nav_version",
+            navTesting      : "androidx.navigation:navigation-testing:$versions.nav_version",
     ]
 }

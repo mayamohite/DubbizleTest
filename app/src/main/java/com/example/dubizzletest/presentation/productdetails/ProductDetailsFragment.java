@@ -5,27 +5,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
-
 import com.example.dubizzletest.R;
 import com.example.dubizzletest.base.BaseFragment;
 import com.example.dubizzletest.domain.entities.Product;
+import com.example.dubizzletest.presentation.productlist.ProductViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 import org.jetbrains.annotations.NotNull;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.example.dubizzletest.presentation.util.UtilKt.PRODUCT;
-
 @AndroidEntryPoint
 public class ProductDetailsFragment extends BaseFragment {
 
     private View fragmentView;
-    private Product product;
+    private ProductViewModel productViewModel;
+    TextView productName;
+    TextView productPrice;
+    ViewPager productViewPager;
 
     @Nullable
     @Override
@@ -38,21 +40,30 @@ public class ProductDetailsFragment extends BaseFragment {
     public void onViewCreated(@NotNull View view, @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(R.string.product_details);
-        product = getArguments().getParcelable(PRODUCT);
+        productViewModel = new ViewModelProvider(requireActivity()).get(ProductViewModel.class);
+        productViewModel.getSelectedProduct().observe(getViewLifecycleOwner(), new Observer<Product>() {
+            @Override
+            public void onChanged(Product product) {
+                setProductDetails(product);
+            }
+        });
         initViews();
     }
 
     private void initViews() {
-        TextView productName = fragmentView.findViewById(R.id.tv_product_name);
-        TextView productPrice = fragmentView.findViewById(R.id.tv_product_price);
-        productName.setText(product.getName());
-        productPrice.setText(product.getPrice());
+        productName = fragmentView.findViewById(R.id.tv_product_name);
+        productPrice = fragmentView.findViewById(R.id.tv_product_price);
         //Initialise view pager
-        ViewPager productViewPager = fragmentView.findViewById(R.id.vp_product_images);
-        ProductViewPagerAdapter productViewPagerAdapter = new ProductViewPagerAdapter(getActivity(), product.getImages());
+        productViewPager = fragmentView.findViewById(R.id.vp_product_images);
         productViewPager.setOffscreenPageLimit(1);
-        productViewPager.setAdapter(productViewPagerAdapter);
         TabLayout tabLayout = fragmentView.findViewById(R.id.tl_image);
         tabLayout.setupWithViewPager(productViewPager);
+    }
+
+    private void setProductDetails(Product product) {
+        productName.setText(product.getName());
+        productPrice.setText(product.getPrice());
+        ProductViewPagerAdapter productViewPagerAdapter = new ProductViewPagerAdapter(getActivity(), product.getImages());
+        productViewPager.setAdapter(productViewPagerAdapter);
     }
 }

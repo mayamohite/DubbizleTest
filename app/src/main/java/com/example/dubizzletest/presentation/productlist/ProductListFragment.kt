@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,11 +32,6 @@ class ProductListFragment : BaseFragment() {
     @Inject
     lateinit var productListAdapter: ProductRecyclerAdapter
     lateinit var rvProduct: RecyclerView
-
-    companion object {
-        val TAG: String = ProductListFragment::class.java.name
-        fun newInstance() = ProductListFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,6 +70,7 @@ class ProductListFragment : BaseFragment() {
         )
         productListAdapter.setProductSelectionCallback { product ->
             productViewModel.setSelectedProduct(product)
+            navigateToProductDetailsFragment()
         }
         progressBar = fragmentView.findViewById(R.id.progress_bar)
     }
@@ -110,5 +107,9 @@ class ProductListFragment : BaseFragment() {
      */
     private fun showErrorMessage(message: String) {
         this.activity?.toast(message)
+    }
+
+    private fun navigateToProductDetailsFragment() {
+        findNavController().navigate(R.id.action_productListFragment_to_productDetailsFragment)
     }
 }
