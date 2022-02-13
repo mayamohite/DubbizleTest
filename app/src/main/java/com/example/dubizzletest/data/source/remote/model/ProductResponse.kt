@@ -1,6 +1,6 @@
 package com.example.dubizzletest.data.source.remote.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 /**
  * ProductResponse is used to handle retrofit api response.
@@ -10,15 +10,15 @@ data class ProductResponse(
 )
 
 data class ProductDetail(
-    @SerializedName("created_at")
+    @field:Json(name = "created_at")
     val createdAt: String?,
     val price: String?,
     val name: String?,
     val uid: String?,
-    @SerializedName("image_ids")
+    @field:Json(name = "image_ids")
     val imageIds: List<String>?,
-    @SerializedName("image_urls")
+    @field:Json(name = "image_urls")
     val imageUrls: List<String>?,
-    @SerializedName("image_urls_thumbnails")
+    @field:Json(name = "image_urls_thumbnails")
     val thumbnails: List<String>?,
 )
